@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Belly Button Bio-Diversity </title>
+    
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" media="screen" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
+    
+</head>
+<body>
+    <div class="container" style="width: 95%">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- jumbotron -->
+                <div class="jumbotron" style="text-align: center">
+                    <div class="container">
+                        <h1>Belly Button Biodiversity
+                            <br>
+                             Dashboard
+                        </h1>
+                        <p>Use the interactive charts below to explore the dataset.</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- main body -->
+        <div class="row">
+            <!-- side selection and summary panel -->
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col-md-12">
+                             <div class="panel panel-default" style="overflow:auto; overflow-wrap:break-word">
+                            <div class="panel-body" style="background-color: #eee">
+                                <body>
+                                    <div id="pie"></div>
+                                    <script>     
+                                        // Plot the default route once the page loads
+                                        var default_url = "/names";
+                                        Plotly.d3.json(default_url, function(error, response) {
+                                            if (error) return console.warn(error);
+                                            var data = [response];
+                                            var layout = { margin: { t: 30, b:100 } }
+                                            Plotly.plot("pie", data, layout)
+                                        })
+                                
+                                        // Update the plot with new data
+                                        function updatePlotly(newdata) {
+                                            var Bar = document.getElementById('pie');
+                                            Plotly.restyle(Pie, 'x', [newdata.x])
+                                            Plotly.restyle(Pie, 'y', [newdata.y])
+                                        }
+                                
+                                        // Get new data whenever the dropdown selection changes
+                                        function getData(route) {
+                                            console.log(route);
+                                            Plotly.d3.json(`/${route}`, function(error, data) {
+                                                console.log("newdata", data);
+                                                updatePlotly(data);
+                                            });
+                                        }
+                                    </script>
+                                    <select id="selDataset" onchange="getData(this.value)">
+                                        <option value="samples_list">Sample Name</option>
+                                    </select>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                            <div class="panel panel-info" style="overflow:auto; overflow-wrap:break-word">
+                                  <div class="panel-heading">
+                                        <h3 class="panel-title">Sample Metadata</h3>
+                                  </div>
+                                  <div id="sample-metadata" class="panel-body">
+                                        
+                                  </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+
+        <!-- pie chart -->
+        <div class="col-md-5">
+            <div id = "piePlot" style="width: 100%; height: 100%"></div>
+
+        </div>
+
+        <div class = "col-md-5">
+            <div id = "meter" style="width: 100%, height: 100%">
+
+            </div>
+        </div>
+
+        
+        <div class="row">
+            <div class="col-md-12" >
+                <div id = "bubblePlot" style="width: 100%; height: 100%"> 
+                    <!-- javascript making bubble plot -->
+                </div>
+            </div>
+        </div>
+
+    
+        </div>
+
+
+    </div>
+    <!-- <script type="text/javascript">
+    var names = {names_list}
+    </script> -->
+    <script src="../static/app.js" type="text/javascript"></script>
+</body>
+</html>
+
+
